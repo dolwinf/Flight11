@@ -7,6 +7,9 @@
 //Google maps platform api
 // AIzaSyDFnMLHhIPMyVaVj-tWEU4H15JCryMYtos
 
+//Google place api to find aiport
+//https://maps.googleapis.com/maps/api/place/textsearch/json?types=airport&query=mumbai&key=AIzaSyDFnMLHhIPMyVaVj-tWEU4H15JCryMYtos
+
 var from;
 var to;
 var dateFrom;
