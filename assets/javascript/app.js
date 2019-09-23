@@ -17,10 +17,13 @@ var dateTo;
 var dateFromConverted;
 var dateToConverted;
 var airlineCode;
+var flightData;
 
 $("#search").on("click", function(e) {
 	e.preventDefault();
-
+	$("body").append(
+		"<img id='flightLoad' src='assets/images/flightLoading.gif'>"
+	);
 	from = $("#from").val();
 	to = $("#to").val();
 
@@ -88,37 +91,47 @@ function kiwi(from, to) {
 			dateFromConverted +
 			"&dateTo=" +
 			dateToConverted +
-			"&limit=3&curr=AUD&max_stopovers=1&sort=price&partner=picky",
+			"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky",
 
 		method: "GET"
 	}).then(function(response) {
-		console.log(response);
-
+		console.log(response.data);
+		$("#flightLoad").remove();
 		if (response.data.length == 0) {
 			flight.append("<p>No flights to show</p>");
 		} else {
 			response.data.forEach(function(item) {
+				totalTime = item.fly_duration;
+				fare = item.conversion.AUD;
 				if (item.route.length > 0) {
 					item.route.forEach(function(path) {
 						airlineCode = path.airline;
 						arrivalTime = moment.unix(path.aTimeUTC).format("HH:mm");
 						depatureTime = moment.unix(path.dTimeUTC).format("HH:mm");
 
-						totalTime = item.fly_duration;
-						fare = item.conversion.AUD;
+						flightData +=
+							"<div class='row'><div class='col-md-2'><div>Image</div></div><div class='col-md-2'><div>" +
+							depatureTime +
+							"</div><div>" +
+							path.cityFrom +
+							"</div></div><div class='col-md-2'><div>" +
+							arrivalTime +
+							"</div><div>" +
+							path.cityTo +
+							"</div></div></div>";
 
-						console.log(
-							"Departure time",
-							depatureTime,
-							"City from",
-							path.cityFrom,
-							"Arrival time",
-							arrivalTime,
-							"Destination city",
-							path.cityTo
-						);
+						// console.log(
+						// 	"Departure time",
+						// 	depatureTime,
+						// 	"City from",
+						// 	path.cityFrom,
+						// 	"Arrival time",
+						// 	arrivalTime,
+						// 	"Destination city",
+						// 	path.cityTo
+						// );
 					});
-
+					$(".flightData").append(flightData);
 					console.log(
 						"Total flight time",
 						totalTime,
@@ -214,7 +227,7 @@ var citiesReturned = [];
 
 $("#from").on("keyup", function(e) {
 	var value = e.target.value;
-	if (value.length > 2) {
+	if (value.length > 1) {
 		$.ajax({
 			url:
 				// "http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
