@@ -91,50 +91,46 @@ function kiwi(from, to) {
 			"&limit=3&curr=AUD&max_stopovers=1&sort=price&partner=picky",
 
 		method: "GET"
-	})
-		.then(function(response) {
-			console.log(response);
+	}).then(function(response) {
+		console.log(response);
 
-			if (response.data.length == 0) {
-				flight.append("<p>No flights to show</p>");
-			} else {
-				response.data.forEach(function(item) {
-					if (item.route.length > 0) {
-						item.route.forEach(function(path) {
-							airlineCode = path.airline;
-							arrivalTime = moment.unix(path.aTimeUTC).format("HH:mm");
-							depatureTime = moment.unix(path.dTimeUTC).format("HH:mm");
+		if (response.data.length == 0) {
+			flight.append("<p>No flights to show</p>");
+		} else {
+			response.data.forEach(function(item) {
+				if (item.route.length > 0) {
+					item.route.forEach(function(path) {
+						airlineCode = path.airline;
+						arrivalTime = moment.unix(path.aTimeUTC).format("HH:mm");
+						depatureTime = moment.unix(path.dTimeUTC).format("HH:mm");
 
-							totalTime = item.fly_duration;
-							fare = item.conversion.AUD;
-
-							console.log(
-								"Departure time",
-								depatureTime,
-								"City from",
-								path.cityFrom,
-								"Arrival time",
-								arrivalTime,
-								"Destination city",
-								path.cityTo
-							);
-						});
+						totalTime = item.fly_duration;
+						fare = item.conversion.AUD;
 
 						console.log(
-							"Total flight time",
-							totalTime,
-							"Total price",
-							fare,
-							"Deep link",
-							item.deep_link
+							"Departure time",
+							depatureTime,
+							"City from",
+							path.cityFrom,
+							"Arrival time",
+							arrivalTime,
+							"Destination city",
+							path.cityTo
 						);
-					}
-				});
-			}
-		})
-		.catch(function(err) {
-			console.log(err);
-		});
+					});
+
+					console.log(
+						"Total flight time",
+						totalTime,
+						"Total price",
+						fare,
+						"Deep link",
+						item.deep_link
+					);
+				}
+			});
+		}
+	});
 }
 
 function codeIataAirline(code) {
@@ -221,13 +217,14 @@ $("#from").on("keyup", function(e) {
 	if (value.length > 2) {
 		$.ajax({
 			url:
-				"http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
-				value,
-			// `https://api.skypicker.com/locations?term=${value}&locale=en-US&location_types=airport&location_types=city&limit=10&active_only=true`,
+				// "http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
+				// value,
+				`https://api.skypicker.com/locations?term=${value}&locale=en-US&location_types=airport&location_types=city&limit=10&active_only=true`,
 			method: "GET"
 		}).then(function(response) {
-			var data = JSON.parse(response);
-			console.log(data);
+			// var data = JSON.parse(response);
+			cityData = response.locations[0].name;
+			if (!citiesReturned.includes(cityData)) citiesReturned.push(cityData);
 			// response.locations.forEach(function(item) {
 			// 	if (!citiesReturned.includes(item.name)) citiesReturned.push(item.name);
 			// 	console.log(citiesReturned);
@@ -241,17 +238,17 @@ $("#to").on("keyup", function(e) {
 	if (value.length > 2) {
 		$.ajax({
 			url:
-				"http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
-				value,
-			// `https://api.skypicker.com/locations?term=${value}&locale=en-US&location_types=airport&location_types=city&limit=10&active_only=true`,
+				// "http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
+				// value,
+				`https://api.skypicker.com/locations?term=${value}&locale=en-US&location_types=airport&location_types=city&limit=10&active_only=true`,
 			method: "GET"
 		}).then(function(response) {
-			console.log(response);
 			// var data = JSON.parse(response);
-			// console.log(data);
+			cityData = response.locations[0].name;
+			if (!citiesReturned.includes(cityData)) citiesReturned.push(cityData);
 			// response.locations.forEach(function(item) {
 			// 	if (!citiesReturned.includes(item.name)) citiesReturned.push(item.name);
-			// console.log(citiesReturned);
+			// 	console.log(citiesReturned);
 			// });
 		});
 	}
@@ -259,12 +256,22 @@ $("#to").on("keyup", function(e) {
 
 $(function() {
 	$("#from").autocomplete({
-		source: citiesReturned
+		source: citiesReturned,
+		messages: {
+			noResults: "",
+			results: function() {
+				$(".ui-helper-hidden-accessible").remove();
+			}
+		}
 	});
 });
 
 $(function() {
 	$("#to").autocomplete({
-		source: citiesReturned
+		source: citiesReturned,
+		//remove helper text from autocomplete
+		messages: {
+			noResults: ""
+		}
 	});
 });
