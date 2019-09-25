@@ -17,10 +17,20 @@ var dateTo;
 var dateFromConverted;
 var dateToConverted;
 var airlineCode;
+var flightData;
+var arrivalTime;
+var depatureTime;
+var flightImage = $("#flightImage");
+var dTime = $(".dTime");
+var dFrom = $(".dFrom");
+var aTime = $(".aTime");
+var aTo = $(".aTo");
 
 $("#search").on("click", function(e) {
 	e.preventDefault();
-
+	$("body").append(
+		"<img id='flightLoad' src='assets/images/flightLoading.gif'>"
+	);
 	from = $("#from").val();
 	to = $("#to").val();
 
@@ -88,45 +98,56 @@ function kiwi(from, to) {
 			dateFromConverted +
 			"&dateTo=" +
 			dateToConverted +
-			"&limit=3&curr=AUD&max_stopovers=1&sort=price&partner=picky",
+			"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky",
 
 		method: "GET"
 	}).then(function(response) {
-		console.log(response);
-
+		console.log(response.data);
+		$("#flightLoad").remove();
 		if (response.data.length == 0) {
 			flight.append("<p>No flights to show</p>");
 		} else {
 			response.data.forEach(function(item) {
+				totalTime = item.fly_duration;
+				fare = item.conversion.AUD;
 				if (item.route.length > 0) {
 					item.route.forEach(function(path) {
-						airlineCode = path.airline;
+						var airlineCode = path.airline;
+
 						arrivalTime = moment.unix(path.aTimeUTC).format("HH:mm");
 						depatureTime = moment.unix(path.dTimeUTC).format("HH:mm");
 
-						totalTime = item.fly_duration;
-						fare = item.conversion.AUD;
-
-						console.log(
-							"Departure time",
-							depatureTime,
-							"City from",
-							path.cityFrom,
-							"Arrival time",
-							arrivalTime,
-							"Destination city",
-							path.cityTo
+						$(".flightContainer").css("display", "block");
+						flightImage.append(
+							"<img src='https://www.skyscanner.net/images/airlines/small/CX.png' alt='CP' />"
 						);
+
+						$(".source").append("<div>" + depatureTime + "</div>");
+						$(".source").append("<div>" + path.cityFrom + "</div>");
+
+						$(".destination").append("<div>" + arrivalTime + "</div>");
+						$(".destination").append("<div>" + path.cityTo + "</div>");
+
+						// console.log(
+						//   "Departure time",
+						//   depatureTime,
+						//   "City from",
+						//   path.cityFrom,
+						//   "Arrival time",
+						//   arrivalTime,
+						//   "Destination city",
+						//   path.cityTo
+						// );
 					});
 
-					console.log(
-						"Total flight time",
-						totalTime,
-						"Total price",
-						fare,
-						"Deep link",
-						item.deep_link
-					);
+					//   console.log(
+					//     "Total flight time",
+					//     totalTime,
+					//     "Total price",
+					//     fare,
+					//     "Deep link",
+					//     item.deep_link
+					//   );
 				}
 			});
 		}
@@ -214,7 +235,7 @@ var citiesReturned = [];
 
 $("#from").on("keyup", function(e) {
 	var value = e.target.value;
-	if (value.length > 2) {
+	if (value.length > 1) {
 		$.ajax({
 			url:
 				// "http://aviation-edge.com/api/public/autocomplete?key=c3466e-7c96d1&query=" +
@@ -271,7 +292,10 @@ $(function() {
 		source: citiesReturned,
 		//remove helper text from autocomplete
 		messages: {
-			noResults: ""
+			noResults: "",
+			results: function() {
+				$(".ui-helper-hidden-accessible").remove();
+			}
 		}
 	});
 });
