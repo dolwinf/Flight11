@@ -127,6 +127,12 @@ function kiwi(from, to) {
             // 	"<div><img src='https://www.skyscanner.net/images/airlines/small/CX.png' alt='CP' /></div>"
             // );
 
+            $("#flightImage").append(
+              "<div style='margin-bottom: 2%'><img height='40px' width='40px' src='https://images.kiwi.com/airlines/64x64/" +
+                airlineCode +
+                ".png' alt='CP' /></div>"
+            );
+
             $(".source").append("<div>" + depatureTime + "</div>");
             $(".source").append("<div>" + path.cityFrom + "</div>");
 
@@ -144,22 +150,19 @@ function kiwi(from, to) {
             //   path.cityTo
             // );
           });
-          $("#flightIcon1").attr(
-            "src",
-            "https://images.kiwi.com/airlines/64x64/AI.png"
-          );
-          $("#flightIcon2").attr(
-            "src",
-            "https://images.kiwi.com/airlines/64x64/SQ.png"
-          );
-          $("#flightIcon3").attr(
-            "src",
-            "https://images.kiwi.com/airlines/64x64/AI.png"
-          );
-          $("#flightIcon4").attr(
-            "src",
-            "https://images.kiwi.com/airlines/64x64/SQ.png"
-          );
+
+          //   $("#flightIcon2").attr(
+          //     "src",
+          //     "https://images.kiwi.com/airlines/64x64/SQ.png"
+          //   );
+          //   $("#flightIcon3").attr(
+          //     "src",
+          //     "https://images.kiwi.com/airlines/64x64/AI.png"
+          //   );
+          //   $("#flightIcon4").attr(
+          //     "src",
+          //     "https://images.kiwi.com/airlines/64x64/SQ.png"
+          //   );
           $(".additionalData").append(
             "<div>" +
               totalTime +
