@@ -20,25 +20,38 @@ var airlineCode;
 var flightData;
 var arrivalTime;
 var depatureTime;
+var flightQuery;
+var tripType = $("#trip-type");
 var flightImage = $("#flightImage");
 var dTime = $(".dTime");
 var dFrom = $(".dFrom");
 var aTime = $(".aTime");
 var aTo = $(".aTo");
-
+// var radioOption = $("input:radio[name='trip']");
 var startDate = $("#start");
 var endDate = $("#end");
 
-$("input:radio[name='trip']").change(function() {
-	if ($(this).val() == "single-trip") {
+// $("input:radio[name='trip']").change(function() {
+// 	if ($(this).val() == "single-trip") {
+// 		endDate.attr("disabled", true);
+// 	} else {
+// 		endDate.attr("disabled", false);
+// 	}
+// });
+
+tripType.on("change", function() {
+	if (tripType.val() == "single-trip") {
 		endDate.attr("disabled", true);
-	} else {
+	} else if (tripType.val() == "round-trip") {
 		endDate.attr("disabled", false);
+	} else {
+		console.log("Invalid input");
 	}
 });
 
 $("#search").on("click", function(e) {
 	e.preventDefault();
+
 	$("body").append(
 		"<img id='flightLoad' src='assets/images/flightLoading.gif'>"
 	);
@@ -98,33 +111,8 @@ function travelTo(code) {
 	});
 }
 
-var returnTrip =
-	"https://api.skypicker.com/flights?fly_from=" +
-	from +
-	"&fly_to=" +
-	to +
-	"&date_from=" +
-	dateFromConverted +
-	"&date_to=" +
-	dateFromConverted +
-	"&return_from=" +
-	dateToConverted +
-	"&return_to=" +
-	dateToConverted +
-	"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky";
-
-function checkURL() {
-	$("input:radio[name='trip']").change(function() {
-		if ($(this).val() == "single-trip") {
-			url: singleTrip;
-		} else {
-			endDate.attr("disabled", false);
-		}
-	});
-}
-
 function kiwi(from, to) {
-	var singleTrip =
+	flightQuery =
 		"https://api.skypicker.com/flights?fly_from=" +
 		from +
 		"&fly_to=" +
@@ -133,9 +121,27 @@ function kiwi(from, to) {
 		dateFromConverted +
 		"&date_to=" +
 		dateFromConverted +
+		"&return_from=" +
+		dateToConverted +
+		"&return_to=" +
+		dateToConverted +
 		"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky";
+
+	if (tripType.val() == "single-trip") {
+		flightQuery =
+			"https://api.skypicker.com/flights?fly_from=" +
+			from +
+			"&fly_to=" +
+			to +
+			"&date_from=" +
+			dateFromConverted +
+			"&date_to=" +
+			dateFromConverted +
+			"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky";
+	}
+
 	$.ajax({
-		url: singleTrip,
+		url: flightQuery,
 
 		method: "GET"
 	}).then(function(response) {
