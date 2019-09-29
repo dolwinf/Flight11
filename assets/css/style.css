@@ -238,3 +238,11 @@
 .booking-form .submit-btn:focus {
 	opacity: 0.9;
 }
+
+#margin {
+	margin-bottom: 5%;
+}
+
+#marginAdd {
+	margin-bottom: 10%;
+}
