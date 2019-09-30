@@ -246,3 +246,7 @@
 #marginAdd {
 	margin-bottom: 10%;
 }
+
+#border {
+	border: 1px solid black;
+}
