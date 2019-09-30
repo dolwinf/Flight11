@@ -38,6 +38,25 @@ var endDate = $("#end");
 // 		endDate.attr("disabled", false);
 // 	}
 // });
+function addFlight() {
+	$(".container").append(
+		`<div class='container flightContainer'>
+				<div class='row flightDataRow'>
+				
+					<div class='col-md-2'>
+						<div id='flightImage' style='margin-top:5%'>
+						</div>
+					</div>
+					
+					<div class='col-md-3 source' style='margin-bottom: 3%'></div>
+					<div class='col-md-3 destination' style='margin-bottom: 3%'></div>
+					<div class='col-md-2 additionalData'>
+					</div>
+					
+				</div>
+		</div>`
+	);
+}
 
 tripType.on("change", function() {
 	if (tripType.val() == "single-trip") {
@@ -51,6 +70,7 @@ tripType.on("change", function() {
 
 $("#search").on("click", function(e) {
 	e.preventDefault();
+	addFlight();
 
 	$("body").append(
 		"<img id='flightLoad' src='assets/images/flightLoading.gif'>"
@@ -125,7 +145,7 @@ function kiwi(from, to) {
 		dateToConverted +
 		"&return_to=" +
 		dateToConverted +
-		"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky";
+		"&limit=3&curr=AUD&max_stopovers=1&sort=price&partner=picky";
 
 	if (tripType.val() == "single-trip") {
 		flightQuery =
@@ -137,7 +157,7 @@ function kiwi(from, to) {
 			dateFromConverted +
 			"&date_to=" +
 			dateFromConverted +
-			"&limit=1&curr=AUD&max_stopovers=1&sort=price&partner=picky";
+			"&limit=3&curr=AUD&max_stopovers=1&sort=price&partner=picky";
 	}
 
 	$.ajax({
@@ -147,6 +167,7 @@ function kiwi(from, to) {
 	}).then(function(response) {
 		console.log(response.data);
 		$("#flightLoad").remove();
+
 		if (response.data.length == 0) {
 			//   flight.append("<p>No flights to show</p>");
 			console.log("No flights to show");
@@ -161,7 +182,7 @@ function kiwi(from, to) {
 						arrivalTime = moment.unix(path.aTimeUTC).format("llll");
 						depatureTime = moment.unix(path.dTimeUTC).format("llll");
 
-						$(".flightContainer").css("display", "block");
+						// $(".flightContainer").css("display", "block");
 						// flightImage.append(
 						// 	"<div><img src='https://www.skyscanner.net/images/airlines/small/CX.png' alt='CP' /></div>"
 						// );
