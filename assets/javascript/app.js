@@ -59,7 +59,7 @@ tripType.on("change", function() {
 
 $("#search").on("click", function(e) {
   e.preventDefault();
-
+  $(".flightContainer").empty();
   $("body").append(
     "<img id='flightLoad' src='assets/images/flightLoading.gif'>"
   );
