@@ -42,19 +42,7 @@ addFlight();
 function addFlight() {
   $(".container").append(
     `<div class='container flightContainer'>
-				<div class='row flightDataRow'>
 				
-					<div class='col-md-2'>
-						<div id='flightImage' style='margin-top:5%'>
-						</div>
-					</div>
-					
-					<div class='col-md-3 source' style='margin-bottom: 3%'></div>
-					<div class='col-md-3 destination' style='margin-bottom: 3%'></div>
-					<div class='col-md-2 additionalData'>
-					</div>
-					
-				</div>
 		</div>`
   );
 }
@@ -172,9 +160,23 @@ function kiwi(from, to) {
       //   flight.append("<p>No flights to show</p>");
       console.log("No flights to show");
     } else {
-      response.data.forEach(function(item) {
+      response.data.forEach(function(item, index) {
+        var uIndex = index;
         totalTime = item.fly_duration;
         fare = item.conversion.AUD;
+        $(".flightContainer").append(`<div class='row flightDataRow'>
+				
+        <div class='col-md-2'>
+          <div id='flightImage${uIndex}' style='margin-top:5%'>
+          </div>
+        </div>
+        
+        <div class='col-md-3 source${uIndex}' style='margin-bottom: 3%'></div>
+        <div class='col-md-3 destination${uIndex}' style='margin-bottom: 3%'></div>
+        <div class='col-md-2 additionalData${uIndex}'>
+        </div>
+        
+      </div>`);
         if (item.route.length > 0) {
           item.route.forEach(function(path) {
             var airlineCode = path.airline;
@@ -187,17 +189,19 @@ function kiwi(from, to) {
             // 	"<div><img src='https://www.skyscanner.net/images/airlines/small/CX.png' alt='CP' /></div>"
             // );
 
-            $("#flightImage").append(
+            $(`#flightImage${uIndex}`).append(
               "<div style='margin-bottom: 12%'><img height='40px' width='40px' src='https://images.kiwi.com/airlines/64x64/" +
                 airlineCode +
                 ".png' alt='CP' /></div>"
             );
 
-            $(".source").append("<div>" + depatureTime + "</div>");
-            $(".source").append("<div id='margin'>" + path.cityFrom + "</div>");
+            $(`.source${uIndex}`).append("<div>" + depatureTime + "</div>");
+            $(`.source${uIndex}`).append(
+              "<div id='margin'>" + path.cityFrom + "</div>"
+            );
 
-            $(".destination").append("<div>" + arrivalTime + "</div>");
-            $(".destination").append(
+            $(`.destination${uIndex}`).append("<div>" + arrivalTime + "</div>");
+            $(`.destination${uIndex}`).append(
               "<div id='margin'>" + path.cityTo + "</div>"
             );
 
@@ -225,7 +229,7 @@ function kiwi(from, to) {
           //     "src",
           //     "https://images.kiwi.com/airlines/64x64/SQ.png"
           //   );
-          $(".additionalData").append(
+          $(`.additionalData${uIndex}`).append(
             "<div id='marginAdd'>" +
               totalTime +
               "</div><div id='marginAdd'>$" +
