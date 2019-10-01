@@ -164,7 +164,9 @@ function kiwi(from, to) {
         var uIndex = index;
         totalTime = item.fly_duration;
         fare = item.conversion.AUD;
-        $(".flightContainer").append(`<div class='row flightDataRow'>
+        $(
+          ".flightContainer"
+        ).append(`<div class="card" style="width: 100%;"><div class='row flightDataRow'>
 				
         <div class='col-md-2'>
           <div id='flightImage${uIndex}' style='margin-top:5%'>
@@ -176,7 +178,7 @@ function kiwi(from, to) {
         <div class='col-md-2 additionalData${uIndex}'>
         </div>
         
-      </div>`);
+      </div></div>`);
         if (item.route.length > 0) {
           item.route.forEach(function(path) {
             var airlineCode = path.airline;
