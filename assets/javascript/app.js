@@ -166,15 +166,15 @@ function kiwi(from, to) {
         fare = item.conversion.AUD;
         $(
           ".flightContainer"
-        ).append(`<div class="card" style="width: 100%;"><div class='row flightDataRow'>
+        ).append(`<div class="card margin-bottom2 yellowBack" style="width: 90%; padding: 2%"><div class='row flightDataRow'>
 				
         <div class='col-md-2'>
-          <div id='flightImage${uIndex}' style='margin-top:5%'>
+          <div class='margin-left' id='flightImage${uIndex}' style='margin-top:8%'>
           </div>
         </div>
         
-        <div class='col-md-3 source${uIndex}' style='margin-bottom: 3%'></div>
-        <div class='col-md-3 destination${uIndex}' style='margin-bottom: 3%'></div>
+        <div class='col-md-4 source${uIndex}' style='margin-bottom: 3%'></div>
+        <div class='col-md-4 destination${uIndex}' style='margin-bottom: 3%'></div>
         <div class='col-md-2 additionalData${uIndex}'>
         </div>
         
