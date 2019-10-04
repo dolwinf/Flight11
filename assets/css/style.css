@@ -264,9 +264,10 @@
 }
 
 .yellowBack {
-  background-color: lightyellow;
+  background-color: rgb(193, 238, 182);
 }
 
-html {
-  background-color: lightskyblue;
+body {
+  background-color: rgb(0, 210, 238);
+  font-family: "Josefin Sans", sans-serif;
 }

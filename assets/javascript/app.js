@@ -234,9 +234,9 @@ function kiwi(from, to) {
           $(`.additionalData${uIndex}`).append(
             "<div id='marginAdd'>" +
               totalTime +
-              "</div><div id='marginAdd'>$" +
+              "</div><div id='marginAdd'><strong>$" +
               fare +
-              "</div><div><a class='btn btn-primary' href='" +
+              "</strong></div><div><a class='btn btn-primary' href='" +
               item.deep_link +
               "'>Book</a></div>"
           );
