@@ -4,7 +4,7 @@ For my first project, i choose to create an Online Travel Agency using **JQUERY*
 
 The aim of the project was to use JQUERY to consume different APIs.
 
-Apart from front-end logic, one of the challenges of the project was understanding how the travel agencies work.
+Apart from front-end logic, one of the challenges of the project was understanding the business, how travel agencies work.
 
 Two main APIs used in the project are : 
 * kiwi.com API 
