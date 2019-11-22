@@ -2,7 +2,7 @@
 
 For my first project, i choose to create an Online Travel Agency using **JQUERY** in the frontend.
 
-The aim of the project was to use JQUERY to consume diferent APIs.
+The aim of the project was to use JQUERY to consume different APIs.
 
 Apart from front-end logic, one of the challenges of the project was understanding how the travel agencies work.
 
